@@ -23,19 +23,25 @@ export default async function HomePage() {
     <>
       {/* ---------------- HERO ---------------- */}
       <section className="relative flex min-h-[100svh] items-end overflow-hidden bg-ink-950">
-        <Image
-          src="/images/hero.jpg"
-          alt="Άγαλμα της Θέμιδας με τη ζυγαριά της δικαιοσύνης"
-          fill
-          preload
-          sizes="100vw"
-          className="animate-slow-zoom object-cover object-[70%_center] opacity-80"
-        />
-        <div className="absolute inset-0 bg-linear-to-r from-ink-950 via-ink-950/80 to-ink-950/10" />
-        <div className="absolute inset-0 bg-linear-to-t from-ink-950 via-transparent to-ink-950/50" />
+        {/* Phones: the statue sits in a box under the menu, framed on the right half of the photo.
+            From md up: full-bleed background as before. */}
+        <div className="absolute inset-x-0 top-20 aspect-square overflow-hidden sm:aspect-[4/3] md:inset-0 md:aspect-auto">
+          <Image
+            src="/images/hero.jpg"
+            alt="Άγαλμα της Θέμιδας με τη ζυγαριά της δικαιοσύνης"
+            fill
+            preload
+            sizes="100vw"
+            className="animate-slow-zoom object-cover object-[88%_center] opacity-90 md:object-[70%_center] md:opacity-80"
+          />
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-ink-950 to-transparent md:hidden" />
+          <div className="absolute inset-x-0 top-0 h-16 bg-linear-to-b from-ink-950/80 to-transparent md:hidden" />
+        </div>
+        <div className="absolute inset-0 hidden bg-linear-to-r from-ink-950 via-ink-950/80 to-ink-950/10 md:block" />
+        <div className="absolute inset-0 hidden bg-linear-to-t from-ink-950 via-transparent to-ink-950/50 md:block" />
         <div className="noise pointer-events-none absolute inset-0 opacity-[0.06]" />
 
-        <div className="container-x relative pb-14 pt-40 lg:pb-20">
+        <div className="container-x relative pb-14 pt-[calc(100vw+1.5rem)] sm:pt-[calc(75vw+1.5rem)] md:pt-40 lg:pb-20">
           <div className="max-w-3xl">
             <p className="eyebrow animate-fade-up">Δικηγορικό Γραφείο · Αθήνα</p>
             <h1 className="mt-7 animate-fade-up font-serif text-5xl leading-[1.04] text-white [animation-delay:120ms] sm:text-6xl lg:text-[5.4rem]">
