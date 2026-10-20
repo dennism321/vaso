@@ -34,6 +34,13 @@ The site opens at <http://localhost:3000>. The admin panel is at <http://localho
 
 On first page load the database is seeded with the starter articles and sample reviews (controlled by a one-time guard in `site_meta`).
 
+## Hosting on Vercel
+
+1. Import this repository in Vercel (New Project → dennism321/vaso). Framework: Next.js, defaults are fine.
+2. In the project, open **Storage → Create Database → Neon (Postgres)** and connect it. This sets `DATABASE_URL`.
+3. In **Settings → Environment Variables**, add `ADMIN_PASSWORD` (and optionally `ADMIN_SESSION_SECRET`, `NEXT_PUBLIC_SITE_URL`).
+4. Redeploy. The `vercel-build` script creates the database tables, and the first page visit adds the starter articles and reviews.
+
 ## Production build
 
 ```bash

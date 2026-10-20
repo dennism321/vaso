@@ -45,7 +45,7 @@ const ROOT_ALLOWLIST = new Set([
   "tsconfig.json",
   "next.config.ts",
   "next-env.d.ts",
-  "drizzle.config.json",
+  "drizzle.config.ts",
   "postcss.config.mjs",
   "eslint.config.mjs",
   ".env.example",
