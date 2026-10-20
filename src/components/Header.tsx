@@ -77,7 +77,7 @@ export default function Header({ areas }: { areas: AreaLink[] }) {
       </div>
 
       <div className="container-x flex h-20 items-center justify-between gap-6 min-[1440px]:max-w-[90rem]">
-        <Logo className="xl:shrink-0" />
+        <Logo className="xl:shrink-0" onNavigate={close} />
 
         <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Κύρια πλοήγηση">
           {mainNav.map((item) =>
