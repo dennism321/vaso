@@ -34,7 +34,7 @@ export default function Header({ areas }: { areas: AreaLink[] }) {
   const isActive = (href: string) =>
     href === "/"
       ? pathname === "/"
-      : pathname.startsWith(href) || (href === "/news" && pathname.startsWith("/media"));
+      : pathname.startsWith(href);
   const close = () => setOpen(false);
 
   return (
@@ -77,7 +77,7 @@ export default function Header({ areas }: { areas: AreaLink[] }) {
       </div>
 
       <div className="container-x flex h-20 items-center justify-between gap-6 min-[1440px]:max-w-[90rem]">
-        <Logo />
+        <Logo className="xl:shrink-0" />
 
         <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Κύρια πλοήγηση">
           {mainNav.map((item) =>
@@ -86,7 +86,7 @@ export default function Header({ areas }: { areas: AreaLink[] }) {
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition",
+                    "flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-medium transition",
                     isActive(item.href) ? "text-gold-300" : "text-white/80 hover:text-white",
                   )}
                 >
@@ -126,7 +126,7 @@ export default function Header({ areas }: { areas: AreaLink[] }) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition",
+                  "relative whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-medium transition",
                   isActive(item.href) ? "text-gold-300" : "text-white/80 hover:text-white",
                 )}
               >
@@ -141,7 +141,7 @@ export default function Header({ areas }: { areas: AreaLink[] }) {
             href={site.phone.href}
             aria-label={`Τηλέφωνο γραφείου ${site.phone.display}`}
             title={site.phone.display}
-            className="hidden shrink-0 items-center gap-2 whitespace-nowrap text-sm font-medium tabular-nums text-white/80 transition hover:text-gold-300 xl:flex"
+            className="hidden shrink-0 items-center gap-2 whitespace-nowrap text-sm font-medium tabular-nums text-white/80 transition hover:text-gold-300 min-[1440px]:flex"
           >
             <span className="grid size-9 shrink-0 place-items-center rounded-full border border-white/15">
               <Phone className="size-4" />

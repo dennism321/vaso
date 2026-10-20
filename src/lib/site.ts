@@ -38,6 +38,7 @@ export const mainNav = [
   { href: "/about", label: "Το Γραφείο" },
   { href: "/practice-areas", label: "Τομείς Δικαίου" },
   { href: "/news", label: "Αρθρογραφία" },
+  { href: "/media", label: "Στα ΜΜΕ" },
   { href: "/reviews", label: "Κριτικές" },
   { href: "/contact", label: "Επικοινωνία" },
 ];
