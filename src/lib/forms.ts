@@ -1,15 +1,32 @@
-"use server";
-
-import { randomBytes } from "node:crypto";
-import { db } from "@/db";
-import { appointments, messages, subscribers, testimonials } from "@/db/schema";
-import { isConsultationType, isSlotBookable, isValidISODate, isSlotTime } from "@/lib/booking";
+import { consultationLabel, isConsultationType, isSlotBookable, isSlotTime, isValidISODate } from "@/lib/booking";
+import { site } from "@/lib/site";
 import type { ActionResult, BookingConfirmation } from "@/lib/types";
+
+/**
+ * Form handling for the static site (runs in the visitor's browser).
+ *
+ * Optional form service URL (e.g. Formspree, Getform or Web3Forms).
+ * When empty, submitting a form opens the visitor's email app with a
+ * pre-filled message to the office email (site.email).
+ */
+export const FORM_ENDPOINT = "";
+
+type FormKind = "contact" | "booking" | "review" | "newsletter";
+type Delivery = "sent" | "mailto";
+
+const SUBJECTS: Record<FormKind, string> = {
+  contact: "Μήνυμα από την ιστοσελίδα",
+  booking: "Αίτημα ραντεβού",
+  review: "Νέα κριτική από την ιστοσελίδα",
+  newsletter: "Εγγραφή στο newsletter",
+};
+
+const MAILTO_NOTE =
+  "Το πρόγραμμα email σας άνοιξε με το μήνυμα έτοιμο — πατήστε «Αποστολή» για να ολοκληρωθεί.";
+const GENERIC_ERROR = `Παρουσιάστηκε τεχνικό σφάλμα. Δοκιμάστε ξανά ή καλέστε μας στο ${site.phone.display}.`;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_RE = /^[+()\d\s.-]{6,20}$/;
-const GENERIC_ERROR =
-  "Παρουσιάστηκε τεχνικό σφάλμα. Δοκιμάστε ξανά ή καλέστε μας στο 210 644 58 95.";
 
 function field(fd: FormData, key: string, max = 2000) {
   const value = fd.get(key);
@@ -20,13 +37,35 @@ function isBot(fd: FormData) {
   return field(fd, "website").length > 0;
 }
 
-function isUniqueViolation(error: unknown) {
-  const e = error as { code?: string; cause?: { code?: string } } | null;
-  return e?.code === "23505" || e?.cause?.code === "23505";
-}
-
 function invalid(errors: Record<string, string>): ActionResult<never> {
   return { ok: false, message: "Παρακαλούμε ελέγξτε τα επισημασμένα πεδία.", errors };
+}
+
+/** Sends the fields to FORM_ENDPOINT, or opens a pre-filled email. Returns how it was sent. */
+async function deliver(kind: FormKind, fields: Record<string, string>, subjectExtra = ""): Promise<Delivery> {
+  const subject = SUBJECTS[kind] + (subjectExtra ? ` — ${subjectExtra}` : "");
+  const filled = Object.fromEntries(Object.entries(fields).filter(([, v]) => v.trim().length > 0));
+
+  if (FORM_ENDPOINT) {
+    const res = await fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ form: kind, subject, ...filled }),
+    });
+    if (!res.ok) throw new Error("Submission failed");
+    return "sent";
+  }
+
+  const body = Object.entries(filled)
+    .map(([k, v]) => `${k}: ${v}`)
+    .join("\n");
+  window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  return "mailto";
+}
+
+/** With the email fallback nothing has reached the office yet, so ask the visitor to press Send. */
+function done(sentMessage: string, how: Delivery, extra = "") {
+  return how === "mailto" ? [MAILTO_NOTE, extra].filter(Boolean).join(" ") : sentMessage;
 }
 
 export async function submitContact(fd: FormData): Promise<ActionResult> {
@@ -49,31 +88,33 @@ export async function submitContact(fd: FormData): Promise<ActionResult> {
   if (!consent) errors.consent = "Απαιτείται η συγκατάθεσή σας για την επεξεργασία των στοιχείων.";
   if (Object.keys(errors).length) return invalid(errors);
 
+  const urgentCall = `Για άμεση συνδρομή καλέστε επίσης στο ${site.mobile.display}.`;
   try {
-    await db.insert(messages).values({
-      name,
-      email,
-      phone: phone || null,
-      subject: subject || null,
-      practiceArea: practiceArea || null,
-      message,
-      urgent,
-    });
-    return {
-      ok: true,
-      message: urgent
-        ? "Λάβαμε το επείγον μήνυμά σας. Για άμεση συνδρομή καλέστε επίσης στο 697 60 99 044."
-        : "Ευχαριστούμε! Λάβαμε το μήνυμά σας και θα επικοινωνήσουμε μαζί σας το συντομότερο.",
-    };
-  } catch (error) {
-    console.error("[contact]", error);
+    const how = await deliver(
+      "contact",
+      {
+        "Όνομα": name,
+        Email: email,
+        "Τηλέφωνο": phone,
+        "Τομέας": practiceArea,
+        "Θέμα": subject,
+        "Επείγον": urgent ? "ΝΑΙ" : "",
+        "Μήνυμα": message,
+      },
+      [urgent ? "ΕΠΕΙΓΟΝ" : "", subject].filter(Boolean).join(" · "),
+    );
+    const sent = urgent
+      ? `Λάβαμε το επείγον μήνυμά σας. ${urgentCall}`
+      : "Ευχαριστούμε! Λάβαμε το μήνυμά σας και θα επικοινωνήσουμε μαζί σας το συντομότερο.";
+    return { ok: true, message: done(sent, how, urgent ? urgentCall : "") };
+  } catch {
     return { ok: false, message: GENERIC_ERROR };
   }
 }
 
 function bookingReference() {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  const bytes = randomBytes(6);
+  const bytes = crypto.getRandomValues(new Uint8Array(6));
   let ref = "VP-";
   for (const byte of bytes) ref += alphabet[byte % alphabet.length];
   return ref;
@@ -105,40 +146,31 @@ export async function createBooking(fd: FormData): Promise<ActionResult<BookingC
   if (!consent) errors.consent = "Απαιτείται η συγκατάθεσή σας.";
   if (Object.keys(errors).length) return invalid(errors);
 
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const reference = bookingReference();
-    try {
-      await db.insert(appointments).values({
-        reference,
-        name,
-        email,
-        phone,
-        type,
-        practiceArea: practiceArea || null,
-        date,
-        time,
-        notes: notes || null,
-      });
-      return {
-        ok: true,
-        message: "Το ραντεβού σας καταχωρήθηκε επιτυχώς.",
-        data: { reference, date, time, type, name },
-      };
-    } catch (error) {
-      if (isUniqueViolation(error)) {
-        const detail = String((error as { cause?: { constraint?: string }; constraint?: string })?.cause?.constraint ?? (error as { constraint?: string })?.constraint ?? "");
-        if (detail.includes("reference")) continue; // extremely unlikely: retry with a new reference
-        return {
-          ok: false,
-          message: "Η ώρα μόλις κρατήθηκε από άλλον επισκέπτη. Παρακαλούμε επιλέξτε διαφορετική ώρα.",
-          errors: { time: "Η ώρα δεν είναι πλέον διαθέσιμη." },
-        };
-      }
-      console.error("[booking]", error);
-      return { ok: false, message: GENERIC_ERROR };
-    }
+  const reference = bookingReference();
+  try {
+    const how = await deliver(
+      "booking",
+      {
+        "Κωδικός": reference,
+        "Τύπος": consultationLabel(type),
+        "Ημερομηνία": date,
+        "Ώρα": time,
+        "Τομέας": practiceArea,
+        "Όνομα": name,
+        Email: email,
+        "Τηλέφωνο": phone,
+        "Σημειώσεις": notes,
+      },
+      `${date} ${time} · ${reference}`,
+    );
+    return {
+      ok: true,
+      message: done("Το αίτημα ραντεβού σας στάλθηκε.", how),
+      data: { reference, date, time, type, name, via: how },
+    };
+  } catch {
+    return { ok: false, message: GENERIC_ERROR };
   }
-  return { ok: false, message: GENERIC_ERROR };
 }
 
 export async function submitReview(fd: FormData): Promise<ActionResult> {
@@ -158,20 +190,14 @@ export async function submitReview(fd: FormData): Promise<ActionResult> {
   if (Object.keys(errors).length) return invalid(errors);
 
   try {
-    await db.insert(testimonials).values({
-      name,
-      role: role || null,
-      content,
-      rating,
-      source: "website",
-      approved: false,
+    const how = await deliver("review", {
+      "Όνομα": name,
+      "Ιδιότητα": role,
+      "Βαθμολογία": `${rating}/5`,
+      "Κριτική": content,
     });
-    return {
-      ok: true,
-      message: "Ευχαριστούμε θερμά! Η κριτική σας θα δημοσιευθεί μετά από έλεγχο.",
-    };
-  } catch (error) {
-    console.error("[review]", error);
+    return { ok: true, message: done("Ευχαριστούμε θερμά! Η κριτική σας θα δημοσιευθεί μετά από έλεγχο.", how) };
+  } catch {
     return { ok: false, message: GENERIC_ERROR };
   }
 }
@@ -183,10 +209,9 @@ export async function subscribeNewsletter(fd: FormData): Promise<ActionResult> {
     return { ok: false, message: "Συμπληρώστε ένα έγκυρο email.", errors: { email: "Μη έγκυρο email." } };
   }
   try {
-    await db.insert(subscribers).values({ email }).onConflictDoNothing();
-    return { ok: true, message: "Ευχαριστούμε! Θα λαμβάνετε τα νέα μας άρθρα στο email σας." };
-  } catch (error) {
-    console.error("[newsletter]", error);
+    const how = await deliver("newsletter", { Email: email });
+    return { ok: true, message: done("Ευχαριστούμε! Θα λαμβάνετε τα νέα μας άρθρα στο email σας.", how) };
+  } catch {
     return { ok: false, message: GENERIC_ERROR };
   }
 }

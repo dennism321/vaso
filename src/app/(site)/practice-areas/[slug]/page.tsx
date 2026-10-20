@@ -12,7 +12,11 @@ import { getPostsByCategory } from "@/lib/data";
 import { getPracticeArea, practiceAreas } from "@/lib/practice-areas";
 import { site } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return practiceAreas.map((area) => ({ slug: area.slug }));
+}
 
 type Props = { params: Promise<{ slug: string }> };
 

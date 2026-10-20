@@ -1,105 +1,41 @@
 # Βάσω Ζ. Πανταζή & Συνεργάτες — Δικηγορικό Γραφείο
 
-Full-stack website built with **Next.js 16 (App Router) + PostgreSQL + Drizzle ORM + Tailwind CSS v4**.
+Static website built with **Next.js 16 (App Router, static export) + Tailwind CSS v4**.
+No server or database: `npm run build` produces plain HTML/CSS/JS in `out/` that any static host can serve.
 
 ## Features
 
-- Public site: home, about & team, 8 practice areas, searchable articles, reviews, contact, online booking (with Greek public holidays + Orthodox Easter logic), embedded Google Translate toggle (EL ↔ EN).
-- Admin panel at `/admin`: dashboard, messages inbox, appointment management, review moderation, full Markdown article editor with preview, newsletter subscribers.
+- Home, about & team, 8 practice areas, articles (search + categories), reviews, contact, booking request (Greek public holidays + Orthodox Easter logic), privacy policy.
+- Google Translate toggle (EL ↔ EN).
 - Dark navy + gold design with serif/sans typography, scroll animations, mobile-first.
 
-## Requirements
+## Editing content
 
-- **Node.js 20+**
-- **PostgreSQL 14+** running locally (or a reachable instance)
+| What | Where |
+| --- | --- |
+| Articles and reviews | `src/lib/seed-data.ts` (add an entry; set `published: false` / `approved: false` to hide one) |
+| Office details, phones, email, hours | `src/lib/site.ts` |
+| Practice areas | `src/lib/practice-areas.ts` |
+| Images | `public/images/` (`hero.jpg`, `office.jpg`, `consultation.jpg`, `courthouse.jpg`, `posts/*.jpg`) |
 
-## Quick start
+Push to `main` and the host rebuilds the site.
+
+## Forms
+
+Contact, booking, review and newsletter forms open the visitor's email app with a pre-filled message to the office email (`site.email`). Nothing is stored on the site, and bookings are requests that the office confirms.
+
+To receive submissions directly instead, set `FORM_ENDPOINT` in `src/lib/forms.ts` to a form service URL (Formspree, Getform, Web3Forms, …).
+
+## Local development
 
 ```bash
-# 1. Install dependencies
 npm install
-
-# 2. Copy the example environment file and edit it
-cp .env.example .env
-# Edit .env and set DATABASE_URL + ADMIN_PASSWORD
-
-# 3. Push the database schema (creates tables in your Postgres DB)
-npx drizzle-kit push
-
-# 4. Start the development server
-npm run dev
+npm run dev        # http://localhost:3000
+npm run build      # static site in ./out
 ```
 
-The site opens at <http://localhost:3000>. The admin panel is at <http://localhost:3000/admin>.
+Requires Node.js 20+.
 
-On first page load the database is seeded with the starter articles and sample reviews (controlled by a one-time guard in `site_meta`).
+## Hosting
 
-## Hosting on Vercel
-
-1. Import this repository in Vercel (New Project → dennism321/vaso). Framework: Next.js, defaults are fine.
-2. In the project, open **Storage → Create Database → Neon (Postgres)** and connect it. This sets `DATABASE_URL`.
-3. In **Settings → Environment Variables**, add `ADMIN_PASSWORD` (and optionally `ADMIN_SESSION_SECRET`, `NEXT_PUBLIC_SITE_URL`).
-4. Redeploy. The `vercel-build` script creates the database tables, and the first page visit adds the starter articles and reviews.
-
-## Production build
-
-```bash
-npm run build
-npm start
-```
-
-## Scripts
-
-| Script             | Purpose                                  |
-| ------------------ | ---------------------------------------- |
-| `npm run dev`      | Start the Next.js development server     |
-| `npm run build`    | Create an optimized production build     |
-| `npm run start`    | Serve the production build               |
-| `npm run lint`     | Run ESLint                               |
-| `npm run typecheck`| Run the TypeScript compiler in noEmit mode |
-
-## Project layout
-
-```
-src/
-  app/
-    (site)/        # Public pages (home, about, practice-areas, news, contact, reviews, booking, privacy)
-    admin/         # Password-protected admin panel
-    api/           # API routes (health, availability, download-source)
-  components/      # Shared UI (Header, Footer, BookingForm, PostCard, LanguageSwitcher, admin/*, ...)
-  db/              # Drizzle client + schema
-  lib/             # Business logic (booking, site config, practice-areas, auth, seed data, ...)
-public/
-  images/          # Static images
-    hero.jpg       # Homepage hero (Lady Justice statue)
-    office.jpg     # Office interior
-    courthouse.jpg # Courthouse columns
-    consultation.jpg # Client consultation
-    posts/         # Article cover images
-      rights.jpg
-      detention.jpg
-      family.jpg
-      cyber.jpg
-      courtroom.jpg
-```
-
-**Note:** All images are included in the `public/images/` folder. They're referenced as `/images/filename.jpg` in the code.
-
-## Admin access
-
-Set `ADMIN_PASSWORD` in `.env`, then sign in at `/admin/login`.
-
-## Adding content
-
-- **Articles**: Admin → Articles → New article. Use Markdown for the body. Pick a cover from `/images/` or paste a URL.
-- **Practice areas**: edit `src/lib/practice-areas.ts`.
-- **Team / stats / FAQs**: edit `src/lib/site.ts`.
-- **Images**: drop files in `public/images/` and reference them as `/images/your-file.jpg`.
-
-## Greek public holidays
-
-`src/lib/booking.ts` computes Orthodox Easter each year and blocks all Greek public holidays (fixed + movable) from the online booking calendar.
-
-## License
-
-Private project — all rights reserved.
+The site is hosted on Vercel, which builds `main` automatically. Any static host works too: upload the contents of `out/`.

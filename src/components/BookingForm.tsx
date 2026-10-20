@@ -16,11 +16,15 @@ import {
   TriangleAlert,
   Video,
 } from "lucide-react";
-import { createBooking } from "@/app/actions/public";
+import { createBooking } from "@/lib/forms";
 import {
+  athensNow,
   CONSULTATION_TYPES,
   formatBookingDate,
   getBookableDays,
+  isBusinessDay,
+  isSlotBookable,
+  SLOT_TIMES,
   timeToMinutes,
   type ConsultationType,
 } from "@/lib/booking";
@@ -102,19 +106,14 @@ export default function BookingForm({ areas }: { areas: string[] }) {
   const confirmation = result?.ok ? result.data : undefined;
   const error = (key: string) => result?.errors?.[key];
 
+  // Static site: there is no shared booking calendar, so every office-hours slot that is
+  // still ahead of the lead time is offered. The office confirms the final time by email.
   async function loadSlots(day: string) {
-    const id = ++requestId.current;
-    setLoadingSlots(true);
-    setSlots(null);
-    try {
-      const res = await fetch(`/api/availability?date=${day}`, { cache: "no-store" });
-      const json = (await res.json()) as { slots?: SlotAvailability[] };
-      if (id === requestId.current) setSlots(json.slots ?? []);
-    } catch {
-      if (id === requestId.current) setSlots([]);
-    } finally {
-      if (id === requestId.current) setLoadingSlots(false);
-    }
+    ++requestId.current;
+    setLoadingSlots(false);
+    const now = athensNow();
+    const open = isBusinessDay(day);
+    setSlots(SLOT_TIMES.map((t) => ({ time: t, available: open && isSlotBookable(day, t, now) })));
   }
 
   function pickDate(day: string) {
@@ -152,10 +151,25 @@ export default function BookingForm({ areas }: { areas: string[] }) {
         <span className="mx-auto grid size-20 place-items-center rounded-full bg-linear-to-br from-gold-200 to-gold-500 text-ink-950">
           <Check className="size-9" strokeWidth={2.5} />
         </span>
-        <h2 className="mt-8 font-serif text-4xl text-ink-900">Το ραντεβού σας καταχωρήθηκε</h2>
+        <h2 className="mt-8 font-serif text-4xl text-ink-900">
+          {confirmation.via === "mailto" ? "Το αίτημά σας είναι έτοιμο" : "Το αίτημα ραντεβού στάλθηκε"}
+        </h2>
         <p className="mx-auto mt-4 max-w-md text-ink-500">
-          Ευχαριστούμε, {confirmation.name.split(" ")[0]}. Θα επικοινωνήσουμε μαζί σας για την επιβεβαίωση του
-          ραντεβού. Κρατήστε τον κωδικό κράτησης για κάθε επικοινωνία.
+          {confirmation.via === "mailto" ? (
+            <>
+              Το πρόγραμμα email σας άνοιξε με όλα τα στοιχεία του ραντεβού. Πατήστε «Αποστολή» για να λάβουμε
+              το αίτημά σας. Αν δεν άνοιξε, γράψτε μας στο{" "}
+              <a href={`mailto:${site.email}`} className="font-medium text-ink-900 underline">
+                {site.email}
+              </a>{" "}
+              ή καλέστε στο {site.phone.display}.
+            </>
+          ) : (
+            <>
+              Ευχαριστούμε, {confirmation.name.split(" ")[0]}. Θα επικοινωνήσουμε μαζί σας για την επιβεβαίωση του
+              ραντεβού. Κρατήστε τον κωδικό για κάθε επικοινωνία.
+            </>
+          )}
         </p>
         <div className="mx-auto mt-10 grid max-w-lg gap-px overflow-hidden rounded-2xl border border-cream-200 bg-cream-200 text-left sm:grid-cols-2">
           <div className="bg-cream-50 p-5">

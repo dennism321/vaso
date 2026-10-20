@@ -129,9 +129,6 @@ export default function Footer() {
             <Link href="/privacy" className="hover:text-gold-200">
               Πολιτική Απορρήτου
             </Link>
-            <Link href="/admin" className="hover:text-gold-200">
-              Διαχείριση
-            </Link>
           </div>
         </div>
       </div>

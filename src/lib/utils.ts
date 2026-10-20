@@ -75,3 +75,8 @@ export function initials(name: string) {
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("");
 }
+
+/** Lowercase and strip accents so «συλληψη» finds «Σύλληψη». */
+export function normalizeSearch(text: string) {
+  return text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}

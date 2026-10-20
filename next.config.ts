@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {};
+// Static site: `next build` writes plain HTML/CSS/JS to ./out (no server or database needed).
+const nextConfig: NextConfig = {
+  output: "export",
+  images: { unoptimized: true },
+};
 
 export default nextConfig;

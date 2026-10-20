@@ -6,8 +6,6 @@ import ReviewForm from "@/components/ReviewForm";
 import { getApprovedTestimonials, getTestimonialStats } from "@/lib/data";
 import { formatDate, initials } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "Κριτικές Πελατών",
   description: "Διαβάστε τις εμπειρίες όσων εμπιστεύτηκαν το γραφείο μας και μοιραστείτε τη δική σας.",

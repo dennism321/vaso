@@ -3,7 +3,7 @@ import { getAllPublishedSlugs } from "@/lib/data";
 import { practiceAreas } from "@/lib/practice-areas";
 import { site } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();

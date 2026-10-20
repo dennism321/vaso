@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { CircleCheck, Send, TriangleAlert } from "lucide-react";
-import { submitReview } from "@/app/actions/public";
+import { submitReview } from "@/lib/forms";
 import type { ActionResult } from "@/lib/types";
 import { cn } from "@/lib/utils";
 

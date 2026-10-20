@@ -1,9 +1,31 @@
-import type { NewPost, NewTestimonial } from "@/db/schema";
+/** An article. Newest first by `publishedAt`. Set `published: false` to hide one. */
+export type PostInput = {
+  slug: string;
+  title: string;
+  category: string;
+  excerpt: string;
+  content: string;
+  publishedAt: Date;
+  coverImage?: string | null;
+  videoUrl?: string | null;
+  featured?: boolean;
+  published?: boolean;
+};
+
+/** A client review. Set `approved: false` to hide one. */
+export type TestimonialInput = {
+  name: string;
+  content: string;
+  role?: string | null;
+  rating?: number;
+  approved?: boolean;
+  createdAt?: Date;
+};
 
 const disclaimer =
   "*Το παρόν άρθρο έχει αποκλειστικά ενημερωτικό χαρακτήρα και δεν υποκαθιστά την εξατομικευμένη νομική συμβουλή.*";
 
-export const seedPosts: NewPost[] = [
+export const seedPosts: PostInput[] = [
   {
     slug: "dikaiomata-se-periptosi-syllipsis",
     title: "Σύλληψη: τα δικαιώματά σας από το πρώτο λεπτό",
@@ -227,9 +249,9 @@ ${disclaimer}`,
 
 /**
  * Sample reviews so the design can be previewed.
- * Replace them with genuine client reviews from the admin panel (/admin/reviews).
+ * Replace them with genuine client reviews (reviews sent from the site arrive by email).
  */
-export const seedTestimonials: NewTestimonial[] = [
+export const seedTestimonials: TestimonialInput[] = [
   {
     name: "Γ. Μ.",
     role: "Ιδιώτης",

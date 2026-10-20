@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { ArrowRight, Check } from "lucide-react";
-import { subscribeNewsletter } from "@/app/actions/public";
+import { subscribeNewsletter } from "@/lib/forms";
 import type { ActionResult } from "@/lib/types";
 
 export default function NewsletterForm() {

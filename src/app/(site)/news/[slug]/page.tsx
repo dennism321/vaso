@@ -5,11 +5,15 @@ import { ArrowLeft, ArrowRight, CalendarCheck, Clock, Mail } from "lucide-react"
 import Markdown from "@/components/Markdown";
 import PostCard from "@/components/PostCard";
 import { FacebookIcon, LinkedinIcon, XIcon } from "@/components/Icons";
-import { getPostBySlug, getRelatedPosts, incrementPostViews } from "@/lib/data";
+import { getAllPublishedSlugs, getPostBySlug, getRelatedPosts } from "@/lib/data";
 import { site } from "@/lib/site";
 import { formatDate, readingTime, youtubeId } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return (await getAllPublishedSlugs()).map(({ slug }) => ({ slug }));
+}
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -44,7 +48,6 @@ export default async function PostPage({ params }: Props) {
   const post = await getPostBySlug(decode(slug));
   if (!post) notFound();
 
-  void incrementPostViews(post.id);
   const related = await getRelatedPosts(post, 3);
   const video = youtubeId(post.videoUrl);
   const url = `${site.url}/news/${post.slug}`;

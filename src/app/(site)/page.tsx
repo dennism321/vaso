@@ -12,8 +12,6 @@ import { getApprovedTestimonials, getLatestPosts, getTestimonialStats } from "@/
 import { practiceAreas } from "@/lib/practice-areas";
 import { credentials, faqs, notableCases, processSteps, site, stats, values } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
-
 export default async function HomePage() {
   const [posts, testimonials, rating] = await Promise.all([
     getLatestPosts(3),
