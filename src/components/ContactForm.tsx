@@ -3,23 +3,11 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { CircleCheck, Send, TriangleAlert } from "lucide-react";
-import { submitContact } from "@/lib/forms";
-import { formCopy, getUi, type Locale } from "@/lib/i18n";
-import { localePath } from "@/lib/paths";
+import { submitContact } from "@/app/actions/public";
 import type { ActionResult } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export default function ContactForm({
-  areas,
-  defaultArea = "",
-  locale = "el",
-}: {
-  areas: string[];
-  defaultArea?: string;
-  locale?: Locale;
-}) {
-  const f = formCopy[locale];
-  const t = getUi(locale);
+export default function ContactForm({ areas, defaultArea = "" }: { areas: string[]; defaultArea?: string }) {
   const [state, setState] = useState<ActionResult | null>(null);
   const [pending, startTransition] = useTransition();
   const error = (key: string) => state?.errors?.[key];
@@ -41,20 +29,19 @@ export default function ContactForm({
         <label>
           Website <input name="website" tabIndex={-1} autoComplete="off" />
         </label>
-        <input type="hidden" name="locale" value={locale} />
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="c-name" className="label">
-            {f.name} {f.required}
+            Ονοματεπώνυμο *
           </label>
           <input id="c-name" name="name" autoComplete="name" className="field" aria-invalid={!!error("name")} />
           {error("name") && <p className="mt-1.5 text-xs text-orange-700">{error("name")}</p>}
         </div>
         <div>
           <label htmlFor="c-email" className="label">
-            {f.email} {f.required}
+            Email *
           </label>
           <input id="c-email" name="email" type="email" autoComplete="email" className="field" aria-invalid={!!error("email")} />
           {error("email") && <p className="mt-1.5 text-xs text-orange-700">{error("email")}</p>}
@@ -64,23 +51,23 @@ export default function ContactForm({
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="c-phone" className="label">
-            {f.phone}
+            Τηλέφωνο
           </label>
           <input id="c-phone" name="phone" type="tel" autoComplete="tel" className="field" aria-invalid={!!error("phone")} />
           {error("phone") && <p className="mt-1.5 text-xs text-orange-700">{error("phone")}</p>}
         </div>
         <div>
           <label htmlFor="c-area" className="label">
-            {f.area}
+            Τομέας
           </label>
           <select id="c-area" name="practiceArea" defaultValue={defaultArea} className="field">
-            <option value="">{f.chooseArea}</option>
+            <option value="">Επιλέξτε (προαιρετικά)</option>
             {areas.map((area) => (
               <option key={area} value={area}>
                 {area}
               </option>
             ))}
-            <option value={t.other}>{t.other}</option>
+            <option value="Άλλο">Άλλο</option>
           </select>
         </div>
       </div>
@@ -94,14 +81,14 @@ export default function ContactForm({
 
       <div>
         <label htmlFor="c-message" className="label">
-          {f.message} {f.required}
+          Μήνυμα *
         </label>
         <textarea
           id="c-message"
           name="message"
           rows={6}
           className="field resize-y"
-          placeholder={f.messagePlaceholder}
+          placeholder="Περιγράψτε σύντομα την υπόθεσή σας. Μην συμπεριλάβετε ευαίσθητα στοιχεία που δεν είναι απαραίτητα."
           aria-invalid={!!error("message")}
         />
         {error("message") && <p className="mt-1.5 text-xs text-orange-700">{error("message")}</p>}
@@ -110,8 +97,8 @@ export default function ContactForm({
       <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-gold-300/60 bg-gold-100/50 p-4 text-sm text-ink-700">
         <input type="checkbox" name="urgent" className="mt-0.5 size-4 accent-gold-600" />
         <span>
-          <strong className="font-semibold text-ink-900">{f.urgentStrong}</strong>
-          {f.urgentBox.replace(f.urgentStrong, "").replace(/^ — /, " — ")}
+          <strong className="font-semibold text-ink-900">Επείγουσα υπόθεση</strong> — π.χ. σύλληψη, κλήση σε
+          απολογία ή επικείμενη δικάσιμος. Για άμεση συνδρομή καλέστε και στο κινητό.
         </span>
       </label>
 
@@ -119,11 +106,11 @@ export default function ContactForm({
         <label className="flex cursor-pointer items-start gap-3 text-sm text-ink-500">
           <input type="checkbox" name="consent" className="mt-0.5 size-4 accent-gold-600" aria-invalid={!!error("consent")} />
           <span>
-            {f.consentContact}{" "}
-            <Link href={localePath(locale, "/privacy")} className="text-gold-700 underline underline-offset-2">
-              {t.privacy}
+            Συναινώ στην επεξεργασία των στοιχείων μου για την απάντηση στο αίτημά μου, σύμφωνα με την{" "}
+            <Link href="/privacy" className="text-gold-700 underline underline-offset-2">
+              Πολιτική Απορρήτου
             </Link>
-            . {f.required}
+            . *
           </span>
         </label>
         {error("consent") && <p className="mt-1.5 text-xs text-orange-700">{error("consent")}</p>}
@@ -145,11 +132,11 @@ export default function ContactForm({
       <button type="submit" disabled={pending} className="btn btn-dark w-full sm:w-auto">
         {pending ? (
           <>
-            <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> {f.sending}
+            <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> Αποστολή…
           </>
         ) : (
           <>
-            {f.send} <Send className="size-4" />
+            Αποστολή μηνύματος <Send className="size-4" />
           </>
         )}
       </button>

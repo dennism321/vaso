@@ -4,22 +4,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Clock, Mail, Menu, Phone, PhoneCall, X } from "lucide-react";
-import LanguageToggle from "@/components/LanguageToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import Logo from "@/components/Logo";
 import { AreaIcon, FacebookIcon, YoutubeIcon } from "@/components/Icons";
-import { getMainNav, getUi, type Locale } from "@/lib/i18n";
-import { site } from "@/lib/site";
+import { mainNav, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
-import { localePath } from "@/lib/paths";
 
 type AreaLink = { slug: string; title: string; icon: string; short: string };
 
-export default function Header({ areas, locale }: { areas: AreaLink[]; locale: Locale }) {
+export default function Header({ areas }: { areas: AreaLink[] }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const t = getUi(locale);
-  const nav = getMainNav(locale);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -35,8 +31,7 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
     };
   }, [open]);
 
-  const home = localePath(locale, "/");
-  const isActive = (href: string) => (href === home ? pathname === home || pathname === `${home}/` : pathname.startsWith(href));
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
   const close = () => setOpen(false);
 
   return (
@@ -51,23 +46,22 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
       <div
         className={cn(
           "hidden overflow-hidden border-b border-white/10 transition-all duration-500 lg:block",
-          scrolled ? "max-h-0 opacity-0" : "max-h-12 opacity-100",
+          scrolled || open ? "max-h-0 opacity-0" : "max-h-12 opacity-100",
         )}
       >
-        <div className="container-x flex h-10 items-center justify-between text-xs text-white/55">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-2">
-              <Clock className="size-3.5 text-gold-400" /> {t.hoursShort}
+        <div className="container-x flex h-10 items-center justify-between gap-6 text-xs text-white/55 min-[1440px]:max-w-[90rem]">
+          <div className="flex min-w-0 items-center gap-6 whitespace-nowrap">
+            <span className="flex shrink-0 items-center gap-2">
+              <Clock className="size-3.5 shrink-0 text-gold-400" /> {site.hoursShort}
             </span>
-            <a href={`mailto:${site.email}`} className="flex items-center gap-2 transition hover:text-gold-300">
-              <Mail className="size-3.5 text-gold-400" /> {site.email}
+            <a href={`mailto:${site.email}`} className="flex shrink-0 items-center gap-2 transition hover:text-gold-300">
+              <Mail className="size-3.5 shrink-0 text-gold-400" /> {site.email}
             </a>
           </div>
-          <div className="flex items-center gap-5">
-            <a href={site.mobile.href} className="flex items-center gap-2 text-gold-200/90 transition hover:text-gold-100">
-              <PhoneCall className="size-3.5" /> {t.urgentCase}: {site.mobile.display}
+          <div className="flex shrink-0 items-center gap-5 whitespace-nowrap">
+            <a href={site.mobile.href} className="flex shrink-0 items-center gap-2 text-gold-200/90 tabular-nums transition hover:text-gold-100">
+              <PhoneCall className="size-3.5 shrink-0" /> Επείγουσα ποινική υπόθεση: {site.mobile.display}
             </a>
-            <LanguageToggle locale={locale} variant="bar" />
             <span className="h-3 w-px bg-white/15" />
             <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="transition hover:text-gold-300">
               <FacebookIcon className="size-4" />
@@ -79,17 +73,17 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
         </div>
       </div>
 
-      <div className="container-x flex h-20 items-center justify-between gap-4 lg:gap-6">
-        <Logo subtitle={t.logoSubtitle} locale={locale} />
+      <div className="container-x flex h-20 items-center justify-between gap-6 min-[1440px]:max-w-[90rem]">
+        <Logo />
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label={t.mainNavAria}>
-          {nav.map((item) =>
+        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Κύρια πλοήγηση">
+          {mainNav.map((item) =>
             item.href === "/practice-areas" ? (
               <div key={item.href} className="group relative">
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition",
+                    "flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition",
                     isActive(item.href) ? "text-gold-300" : "text-white/80 hover:text-white",
                   )}
                 >
@@ -102,7 +96,7 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
                       {areas.map((area) => (
                         <Link
                           key={area.slug}
-                          href={localePath(locale, `/practice-areas/${area.slug}`)}
+                          href={`/practice-areas/${area.slug}`}
                           className="group/item flex items-start gap-3 rounded-xl p-3 transition hover:bg-white/[0.04]"
                         >
                           <span className="grid size-10 shrink-0 place-items-center rounded-lg border border-gold-400/25 bg-gold-400/10 text-gold-300 transition group-hover/item:border-gold-300/60">
@@ -116,9 +110,9 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
                       ))}
                     </div>
                     <div className="flex items-center justify-between border-t border-white/10 bg-white/[0.02] px-6 py-4 text-sm">
-                      <span className="text-white/55">{t.cantFindArea}</span>
-                      <Link href={localePath(locale, "/contact")} className="flex items-center gap-2 font-medium text-gold-300 hover:text-gold-200">
-                        {t.contactUs} <ArrowRight className="size-4" />
+                      <span className="text-white/55">Δεν βρίσκετε τον τομέα που σας ενδιαφέρει;</span>
+                      <Link href="/contact" className="flex items-center gap-2 font-medium text-gold-300 hover:text-gold-200">
+                        Επικοινωνήστε μαζί μας <ArrowRight className="size-4" />
                       </Link>
                     </div>
                   </div>
@@ -129,7 +123,7 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative rounded-full px-4 py-2 text-sm font-medium transition",
+                  "relative whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition",
                   isActive(item.href) ? "text-gold-300" : "text-white/80 hover:text-white",
                 )}
               >
@@ -139,32 +133,29 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
           )}
         </nav>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <a
             href={site.phone.href}
-            className="hidden items-center gap-2 text-sm font-medium text-white/80 transition hover:text-gold-300 xl:flex"
+            aria-label={`Τηλέφωνο γραφείου ${site.phone.display}`}
+            title={site.phone.display}
+            className="hidden shrink-0 items-center gap-2 whitespace-nowrap text-sm font-medium tabular-nums text-white/80 transition hover:text-gold-300 xl:flex"
           >
-            <span className="grid size-9 place-items-center rounded-full border border-white/15">
+            <span className="grid size-9 shrink-0 place-items-center rounded-full border border-white/15">
               <Phone className="size-4" />
             </span>
-            {site.phone.display}
+            <span className="hidden min-[1440px]:inline">{site.phone.display}</span>
           </a>
-          <div className="lg:hidden">
-            <LanguageToggle locale={locale} />
-          </div>
-          <div className="hidden lg:block">
-            <LanguageToggle locale={locale} />
-          </div>
-          <Link href={localePath(locale, "/booking")} className="btn btn-gold btn-sm hidden sm:inline-flex">
-            {t.bookAppointment}
+          <LanguageSwitcher variant="desktop" />
+          <Link href="/booking" className="btn btn-gold btn-sm hidden sm:inline-flex">
+            Κλείστε ραντεβού
           </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="grid size-11 place-items-center rounded-full border border-white/15 text-white lg:hidden"
+            className="grid size-11 place-items-center rounded-full border border-white/15 text-white xl:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? t.closeMenu : t.openMenu}
+            aria-label={open ? "Κλείσιμο μενού" : "Άνοιγμα μενού"}
           >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
@@ -174,13 +165,13 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
       <div
         id="mobile-menu"
         className={cn(
-          "fixed inset-x-0 bottom-0 top-20 overflow-y-auto bg-ink-950 transition-all duration-500 lg:hidden",
+          "fixed inset-x-0 top-20 h-[calc(100dvh-5rem)] overflow-y-auto bg-ink-950 transition-all duration-500 xl:hidden",
           open ? "visible opacity-100" : "pointer-events-none invisible opacity-0",
         )}
       >
         <div className="container-x flex min-h-full flex-col py-8">
-          <nav className="flex flex-col" aria-label={t.mobileNavAria}>
-            {nav.map((item, i) => (
+          <nav className="flex flex-col" aria-label="Πλοήγηση κινητού">
+            {mainNav.map((item, i) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -198,12 +189,12 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
             ))}
           </nav>
           <div className="mt-8">
-            <p className="eyebrow">{t.practiceAreas}</p>
+            <p className="eyebrow">Τομείς δικαίου</p>
             <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {areas.map((area) => (
                 <Link
                   key={area.slug}
-                  href={localePath(locale, `/practice-areas/${area.slug}`)}
+                  href={`/practice-areas/${area.slug}`}
                   onClick={close}
                   className="flex items-center gap-3 rounded-xl border border-white/10 px-4 py-3 text-sm text-white/80"
                 >
@@ -213,15 +204,13 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
               ))}
             </div>
           </div>
-          <div className="mt-8">
-            <LanguageToggle locale={locale} variant="menu" />
-          </div>
           <div className="mt-auto grid gap-3 pt-10">
-            <Link href={localePath(locale, "/booking")} onClick={close} className="btn btn-gold w-full">
-              {t.bookAppointment}
+            <LanguageSwitcher variant="mobile" onToggle={close} />
+            <Link href="/booking" onClick={close} className="btn btn-gold w-full">
+              Κλείστε ραντεβού
             </Link>
-            <a href={site.mobile.href} className="btn btn-ghost w-full">
-              <PhoneCall className="size-4" /> {t.urgentShort}: {site.mobile.display}
+            <a href={site.mobile.href} className="btn btn-ghost w-full whitespace-nowrap">
+              <PhoneCall className="size-4 shrink-0" /> Επείγον: {site.mobile.display}
             </a>
           </div>
         </div>

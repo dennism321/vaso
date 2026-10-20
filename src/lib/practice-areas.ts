@@ -1,5 +1,3 @@
-import { practiceAreasEn } from "@/lib/en-content";
-
 export type PracticeArea = {
   slug: string;
   title: string;
@@ -279,16 +277,4 @@ export const practiceAreas: PracticeArea[] = [
 
 export function getPracticeArea(slug: string) {
   return practiceAreas.find((area) => area.slug === slug);
-}
-
-export function getLocalizedAreas(locale: "el" | "en"): PracticeArea[] {
-  if (locale === "el") return practiceAreas;
-  return practiceAreas.map((area) => {
-    const en = practiceAreasEn[area.slug];
-    return en ? { ...area, ...en } : area;
-  });
-}
-
-export function getLocalizedArea(slug: string, locale: "el" | "en") {
-  return getLocalizedAreas(locale).find((area) => area.slug === slug);
 }

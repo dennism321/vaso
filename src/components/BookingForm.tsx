@@ -16,15 +16,11 @@ import {
   TriangleAlert,
   Video,
 } from "lucide-react";
-import { createBooking } from "@/lib/forms";
-import { formCopy } from "@/lib/i18n";
-import { localePath } from "@/lib/paths";
+import { createBooking } from "@/app/actions/public";
 import {
   CONSULTATION_TYPES,
   formatBookingDate,
   getBookableDays,
-  isSlotBookable,
-  SLOT_TIMES,
   timeToMinutes,
   type ConsultationType,
 } from "@/lib/booking";
@@ -85,7 +81,7 @@ function downloadIcs(booking: BookingConfirmation) {
   URL.revokeObjectURL(url);
 }
 
-export default function BookingForm({ areas, locale = "el" }: { areas: string[]; locale?: "el" | "en" }) {
+export default function BookingForm({ areas }: { areas: string[] }) {
   const [step, setStep] = useState(1);
   const [type, setType] = useState<ConsultationType>("office");
   const [area, setArea] = useState("");
@@ -111,11 +107,9 @@ export default function BookingForm({ areas, locale = "el" }: { areas: string[];
     setLoadingSlots(true);
     setSlots(null);
     try {
-      // Static site: no shared calendar, so every bookable slot is offered and the office confirms by email.
-      const json: { slots: SlotAvailability[] } = {
-        slots: SLOT_TIMES.map((time) => ({ time, available: isSlotBookable(day, time) })),
-      };
-      if (id === requestId.current) setSlots(json.slots);
+      const res = await fetch(`/api/availability?date=${day}`, { cache: "no-store" });
+      const json = (await res.json()) as { slots?: SlotAvailability[] };
+      if (id === requestId.current) setSlots(json.slots ?? []);
     } catch {
       if (id === requestId.current) setSlots([]);
     } finally {
@@ -158,9 +152,10 @@ export default function BookingForm({ areas, locale = "el" }: { areas: string[];
         <span className="mx-auto grid size-20 place-items-center rounded-full bg-linear-to-br from-gold-200 to-gold-500 text-ink-950">
           <Check className="size-9" strokeWidth={2.5} />
         </span>
-        <h2 className="mt-8 font-serif text-4xl text-ink-900">{formCopy[locale].bookingOkTitle}</h2>
+        <h2 className="mt-8 font-serif text-4xl text-ink-900">Το ραντεβού σας καταχωρήθηκε</h2>
         <p className="mx-auto mt-4 max-w-md text-ink-500">
-          {formCopy[locale].bookingOkLead.replace("{name}", confirmation.name.split(" ")[0])}
+          Ευχαριστούμε, {confirmation.name.split(" ")[0]}. Θα επικοινωνήσουμε μαζί σας για την επιβεβαίωση του
+          ραντεβού. Κρατήστε τον κωδικό κράτησης για κάθε επικοινωνία.
         </p>
         <div className="mx-auto mt-10 grid max-w-lg gap-px overflow-hidden rounded-2xl border border-cream-200 bg-cream-200 text-left sm:grid-cols-2">
           <div className="bg-cream-50 p-5">
@@ -184,7 +179,7 @@ export default function BookingForm({ areas, locale = "el" }: { areas: string[];
           <button type="button" onClick={() => downloadIcs(confirmation)} className="btn btn-gold">
             <Download className="size-4" /> Προσθήκη στο ημερολόγιο
           </button>
-          <Link href={localePath(locale, "/")} className="btn btn-outline">
+          <Link href="/" className="btn btn-outline">
             Επιστροφή στην αρχική
           </Link>
         </div>
@@ -415,7 +410,6 @@ export default function BookingForm({ areas, locale = "el" }: { areas: string[];
           <form onSubmit={onSubmit} noValidate>
             <div className="hidden" aria-hidden="true">
               <input name="website" tabIndex={-1} autoComplete="off" />
-              <input type="hidden" name="locale" value={locale} />
             </div>
             <h2 className="font-serif text-3xl text-ink-900">Τα στοιχεία σας</h2>
             <div className="mt-6 flex flex-wrap gap-3 text-sm">
@@ -467,7 +461,7 @@ export default function BookingForm({ areas, locale = "el" }: { areas: string[];
               <input type="checkbox" name="consent" className="mt-0.5 size-4 accent-gold-600" />
               <span>
                 Συναινώ στην επεξεργασία των στοιχείων μου για τον προγραμματισμό του ραντεβού, σύμφωνα με την{" "}
-                <Link href={localePath(locale, "/privacy")} className="text-gold-700 underline underline-offset-2">
+                <Link href="/privacy" className="text-gold-700 underline underline-offset-2">
                   Πολιτική Απορρήτου
                 </Link>
                 . *

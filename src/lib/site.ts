@@ -1,15 +1,3 @@
-import type { Locale } from "@/lib/i18n";
-import {
-  credentialsEn,
-  faqsEn,
-  notableCasesEn,
-  processStepsEn,
-  statsEn,
-  teamEn,
-  timelineEn,
-  valuesEn,
-} from "@/lib/en-content";
-
 const address = {
   street: "Κυρίλλου Λουκάρεως 25-27",
   area: "Γκύζη",
@@ -202,44 +190,6 @@ export const timeline = [
     text: "Από την εκπροσώπηση συγγενών θυμάτων στη δίκη των Τεμπών έως την πρώτη καταδίκη του Δημοσίου για βλάβη μετά από εμβολιασμό.",
   },
 ];
-
-export function getStats(locale: Locale) {
-  return locale === "en" ? statsEn : stats;
-}
-
-export function getCredentials(locale: Locale) {
-  return locale === "en" ? credentialsEn : credentials;
-}
-
-export function getValues(locale: Locale) {
-  return locale === "en" ? valuesEn : values;
-}
-
-export function getProcessSteps(locale: Locale) {
-  return locale === "en" ? processStepsEn : processSteps;
-}
-
-export function getNotableCases(locale: Locale) {
-  return locale === "en" ? notableCasesEn : notableCases;
-}
-
-export function getTeam(locale: Locale) {
-  if (locale === "el") return team;
-  return team.map((member, i) => ({
-    ...member,
-    role: teamEn[i]?.role ?? member.role,
-    focus: teamEn[i]?.focus ?? member.focus,
-    bio: teamEn[i]?.bio ?? member.bio,
-  }));
-}
-
-export function getTimeline(locale: Locale) {
-  return locale === "en" ? timelineEn : timeline;
-}
-
-export function getFaqs(locale: Locale) {
-  return locale === "en" ? faqsEn : faqs;
-}
 
 export const faqs = [
   {

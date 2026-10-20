@@ -1,12 +1,9 @@
 import Link from "next/link";
 import { ArrowUpRight, Clock, Play } from "lucide-react";
 import type { PostSummary } from "@/lib/data";
-import { getUi, localizeCategory, type Locale } from "@/lib/i18n";
 import { cn, formatDate } from "@/lib/utils";
-import { asset, localePath } from "@/lib/paths";
 
-export default function PostCard({ post, large = false, locale = "el" }: { post: PostSummary; large?: boolean; locale?: Locale }) {
-  const t = getUi(locale);
+export default function PostCard({ post, large = false }: { post: PostSummary; large?: boolean }) {
   return (
     <article
       className={cn(
@@ -18,7 +15,7 @@ export default function PostCard({ post, large = false, locale = "el" }: { post:
         {post.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={asset(post.coverImage)}
+            src={post.coverImage}
             alt=""
             loading="lazy"
             className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105"
@@ -28,17 +25,17 @@ export default function PostCard({ post, large = false, locale = "el" }: { post:
         )}
         <div className="absolute inset-0 bg-linear-to-t from-ink-950/50 to-transparent" />
         <span className="absolute left-4 top-4 rounded-full bg-ink-950/75 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gold-200 backdrop-blur">
-          {localizeCategory(post.category, locale)}
+          {post.category}
         </span>
         {post.videoUrl && (
           <span className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-gold-400 px-3 py-1.5 text-xs font-semibold text-ink-950">
-            <Play className="size-3.5 fill-current" /> {t.video}
+            <Play className="size-3.5 fill-current" /> Βίντεο
           </span>
         )}
       </div>
       <div className={cn("flex flex-1 flex-col p-7", large && "lg:justify-center lg:p-12")}>
         <div className="flex items-center gap-3 text-xs text-ink-400">
-          <time dateTime={new Date(post.publishedAt).toISOString()}>{formatDate(post.publishedAt, locale)}</time>
+          <time dateTime={new Date(post.publishedAt).toISOString()}>{formatDate(post.publishedAt)}</time>
           <span className="size-1 rounded-full bg-gold-400" />
           <span className="flex items-center gap-1.5">
             <Clock className="size-3.5" /> {post.readingMinutes}′ ανάγνωση
@@ -50,7 +47,7 @@ export default function PostCard({ post, large = false, locale = "el" }: { post:
             large ? "text-2xl md:text-4xl" : "text-xl",
           )}
         >
-          <Link href={localePath(locale, `/news/${post.slug}`)} className="after:absolute after:inset-0">
+          <Link href={`/news/${post.slug}`} className="after:absolute after:inset-0">
             {post.title}
           </Link>
         </h3>
@@ -58,7 +55,7 @@ export default function PostCard({ post, large = false, locale = "el" }: { post:
           {post.excerpt}
         </p>
         <span className="mt-auto flex items-center gap-2 pt-6 text-sm font-semibold text-ink-900">
-          {t.readMore}
+          Διαβάστε περισσότερα
           <ArrowUpRight className="size-4 text-gold-500 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </span>
       </div>

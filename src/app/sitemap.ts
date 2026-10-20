@@ -3,7 +3,7 @@ import { getAllPublishedSlugs } from "@/lib/data";
 import { practiceAreas } from "@/lib/practice-areas";
 import { site } from "@/lib/site";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
-  const posts = getAllPublishedSlugs();
+  const posts = await getAllPublishedSlugs();
   const postRoutes = posts.map((post) => ({
     url: `${site.url}/news/${post.slug}`,
     lastModified: post.updatedAt,

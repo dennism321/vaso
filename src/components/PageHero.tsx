@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
-import { getUi, type Locale } from "@/lib/i18n";
-import { localePath } from "@/lib/paths";
 
 export default function PageHero({
   eyebrow,
@@ -12,7 +10,6 @@ export default function PageHero({
   image = "/images/courthouse.jpg",
   crumbs = [],
   children,
-  locale = "el",
 }: {
   eyebrow: string;
   title: ReactNode;
@@ -20,9 +17,7 @@ export default function PageHero({
   image?: string;
   crumbs?: { href?: string; label: string }[];
   children?: ReactNode;
-  locale?: Locale;
 }) {
-  const t = getUi(locale);
   return (
     <section className="relative overflow-hidden bg-ink-950 pb-20 pt-36 lg:pb-28 lg:pt-48">
       <Image src={image} alt="" fill preload sizes="100vw" className="animate-slow-zoom object-cover opacity-30" />
@@ -30,15 +25,15 @@ export default function PageHero({
       <div className="grid-lines absolute inset-0 opacity-50 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
       <div className="noise pointer-events-none absolute inset-0 opacity-[0.05]" />
       <div className="container-x relative">
-        <nav aria-label={locale === "en" ? "Breadcrumb" : "Διαδρομή"} className="mb-10 flex flex-wrap items-center gap-2 text-xs text-white/45 animate-fade-in">
-          <Link href={localePath(locale, "/")} className="transition hover:text-gold-300">
-            {t.homeLabel}
+        <nav aria-label="Διαδρομή" className="mb-10 flex flex-wrap items-center gap-2 text-xs text-white/45 animate-fade-in">
+          <Link href="/" className="transition hover:text-gold-300">
+            Αρχική
           </Link>
           {crumbs.map((crumb) => (
             <span key={crumb.label} className="flex items-center gap-2">
               <ChevronRight className="size-3" />
               {crumb.href ? (
-                <Link href={localePath(locale, crumb.href)} className="transition hover:text-gold-300">
+                <Link href={crumb.href} className="transition hover:text-gold-300">
                   {crumb.label}
                 </Link>
               ) : (

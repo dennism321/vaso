@@ -3,15 +3,11 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { CircleCheck, Send, TriangleAlert } from "lucide-react";
-import { submitReview } from "@/lib/forms";
-import { formCopy, getUi, type Locale } from "@/lib/i18n";
-import { localePath } from "@/lib/paths";
+import { submitReview } from "@/app/actions/public";
 import type { ActionResult } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export default function ReviewForm({ locale = "el" }: { locale?: Locale }) {
-  const f = formCopy[locale];
-  const t = getUi(locale);
+export default function ReviewForm() {
   const [rating, setRating] = useState(5);
   const [hover, setHover] = useState<number | null>(null);
   const [state, setState] = useState<ActionResult | null>(null);
@@ -39,7 +35,6 @@ export default function ReviewForm({ locale = "el" }: { locale?: Locale }) {
     <form onSubmit={onSubmit} noValidate className="space-y-5">
       <div className="hidden" aria-hidden="true">
         <input name="website" tabIndex={-1} autoComplete="off" />
-        <input type="hidden" name="locale" value={locale} />
       </div>
       <div>
         <span className="label">Βαθμολογία *</span>
@@ -89,7 +84,7 @@ export default function ReviewForm({ locale = "el" }: { locale?: Locale }) {
         <input type="checkbox" name="consent" className="mt-0.5 size-4 accent-gold-600" />
         <span>
           Συναινώ στη δημοσίευση της κριτικής μου με το όνομα/αρχικά που δήλωσα, σύμφωνα με την{" "}
-          <Link href={localePath(locale, "/privacy")} className="text-gold-700 underline underline-offset-2">
+          <Link href="/privacy" className="text-gold-700 underline underline-offset-2">
             Πολιτική Απορρήτου
           </Link>
           . *

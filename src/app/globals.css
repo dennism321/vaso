@@ -266,6 +266,43 @@
   }
 }
 
+/* ---------- Google Translate overrides ----------
+   The translator is embedded behind a custom LanguageSwitcher button.
+   These rules hide Google's default top bar, branding and "Translate" link
+   so the UI stays native. The translation itself is still applied via the
+   `googtrans` cookie set by the switcher.
+---------------------------------------------- */
+.skiptranslate,
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+.goog-te-gadget {
+  color: transparent !important;
+  font-size: 0 !important;
+}
+.goog-te-gadget .goog-te-combo,
+.goog-te-gadget > span,
+.goog-logo-link,
+.goog-te-gadget img,
+#google_translate_element {
+  display: none !important;
+}
+.goog-text-highlight {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* When the translator is active, hide the subtle "translated with Google" hint
+   that some browsers briefly show on hover. */
+.translated-ltr .goog-logo-link,
+.translated-rtl .goog-logo-link {
+  display: none !important;
+}
+
 /* ---------- Scroll reveal (progressive enhancement) ---------- */
 [data-reveal] {
   transition:

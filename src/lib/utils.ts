@@ -2,14 +2,16 @@ export function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
-export function formatDate(value: Date | string, locale: string = "el") {
+const dateFormatter = new Intl.DateTimeFormat("el-GR", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "Europe/Athens",
+});
+
+export function formatDate(value: Date | string) {
   const date = typeof value === "string" ? new Date(value) : value;
-  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "el-GR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "Europe/Athens",
-  }).format(date);
+  return dateFormatter.format(date);
 }
 
 const dateTimeFormatter = new Intl.DateTimeFormat("el-GR", {
