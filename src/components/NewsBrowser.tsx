@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import PageHero from "@/components/PageHero";
+import NewsTabs from "@/components/NewsTabs";
 import PostCard from "@/components/PostCard";
 import type { PostSummary } from "@/lib/data";
 import { basePath } from "@/lib/paths";
@@ -114,6 +115,7 @@ export default function NewsBrowser({
 
       <section id="news-list" className="scroll-mt-24 py-16 lg:py-24">
         <div className="container-x">
+          <NewsTabs active="/news" />
           <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pb-2">
             <button
               type="button"

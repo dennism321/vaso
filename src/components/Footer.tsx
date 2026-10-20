@@ -9,7 +9,8 @@ import { site } from "@/lib/site";
 const officeLinks = [
   { href: "/about", label: "Το Γραφείο" },
   { href: "/about#team", label: "Η Ομάδα μας" },
-  { href: "/news", label: "Αρθρογραφία & ΜΜΕ" },
+  { href: "/news", label: "Αρθρογραφία" },
+  { href: "/media", label: "Στα ΜΜΕ" },
   { href: "/reviews", label: "Κριτικές πελατών" },
   { href: "/booking", label: "Online ραντεβού" },
   { href: "/contact", label: "Επικοινωνία" },

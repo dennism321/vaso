@@ -31,7 +31,10 @@ export default function Header({ areas }: { areas: AreaLink[] }) {
     };
   }, [open]);
 
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const isActive = (href: string) =>
+    href === "/"
+      ? pathname === "/"
+      : pathname.startsWith(href) || (href === "/news" && pathname.startsWith("/media"));
   const close = () => setOpen(false);
 
   return (
