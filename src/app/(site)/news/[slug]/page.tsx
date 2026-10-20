@@ -6,6 +6,7 @@ import Markdown from "@/components/Markdown";
 import PostCard from "@/components/PostCard";
 import { FacebookIcon, LinkedinIcon, XIcon } from "@/components/Icons";
 import { getAllPublishedSlugs, getPostBySlug, getRelatedPosts } from "@/lib/data";
+import { asset } from "@/lib/paths";
 import { site } from "@/lib/site";
 import { formatDate, readingTime, youtubeId } from "@/lib/utils";
 
@@ -73,7 +74,7 @@ export default async function PostPage({ params }: Props) {
         <header className="relative overflow-hidden bg-ink-950 pb-20 pt-36 lg:pt-44">
           {post.coverImage && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={post.coverImage} alt="" className="absolute inset-0 size-full object-cover opacity-25" />
+            <img src={asset(post.coverImage)} alt="" className="absolute inset-0 size-full object-cover opacity-25" />
           )}
           <div className="absolute inset-0 bg-linear-to-b from-ink-950/60 via-ink-950/85 to-ink-950" />
           <div className="noise pointer-events-none absolute inset-0 opacity-[0.05]" />
@@ -120,7 +121,7 @@ export default async function PostPage({ params }: Props) {
             post.coverImage && (
               <div className="relative -mt-28 mb-14 aspect-[16/8] overflow-hidden rounded-3xl bg-ink-900 shadow-2xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={post.coverImage} alt="" className="absolute inset-0 size-full object-cover" />
+                <img src={asset(post.coverImage)} alt="" className="absolute inset-0 size-full object-cover" />
               </div>
             )
           )}

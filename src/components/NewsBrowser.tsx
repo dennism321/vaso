@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import PostCard from "@/components/PostCard";
 import type { PostSummary } from "@/lib/data";
+import { basePath } from "@/lib/paths";
 import { cn, normalizeSearch } from "@/lib/utils";
 
 const PER_PAGE = 9;
@@ -29,7 +30,7 @@ function toUrl({ q, category, page }: Filters) {
   if (category) sp.set("category", category);
   if (page > 1) sp.set("page", String(page));
   const s = sp.toString();
-  return s ? `/news?${s}` : "/news";
+  return `${basePath}/news${s ? `?${s}` : ""}`;
 }
 
 export default function NewsBrowser({

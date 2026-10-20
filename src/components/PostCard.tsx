@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Clock, Play } from "lucide-react";
 import type { PostSummary } from "@/lib/data";
+import { asset } from "@/lib/paths";
 import { cn, formatDate } from "@/lib/utils";
 
 export default function PostCard({ post, large = false }: { post: PostSummary; large?: boolean }) {
@@ -15,7 +16,7 @@ export default function PostCard({ post, large = false }: { post: PostSummary; l
         {post.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={post.coverImage}
+            src={asset(post.coverImage)}
             alt=""
             loading="lazy"
             className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105"
