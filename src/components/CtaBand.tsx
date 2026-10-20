@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Phone, PhoneCall } from "lucide-react";
 import { getUi, type Locale } from "@/lib/i18n";
 import { site } from "@/lib/site";
+import { localePath } from "@/lib/paths";
 
 export default function CtaBand({
   locale = "el",
@@ -25,10 +26,10 @@ export default function CtaBand({
           <h2 className="mt-6 font-serif text-4xl leading-[1.1] text-white md:text-6xl">{title ?? t.ctaTitle}</h2>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/60">{text ?? t.ctaText}</p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <Link href="/booking" className="btn btn-gold">
+            <Link href={localePath(locale, "/booking")} className="btn btn-gold">
               {t.bookAppointment} <ArrowRight className="size-4" />
             </Link>
-            <Link href="/contact" className="btn btn-ghost">
+            <Link href={localePath(locale, "/contact")} className="btn btn-ghost">
               {t.sendMessage}
             </Link>
           </div>

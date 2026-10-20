@@ -1,4 +1,5 @@
-export const LOCALE_COOKIE = "vp_locale";
+import { localePath } from "@/lib/paths";
+
 export type Locale = "el" | "en";
 
 export function parseLocale(value?: string | null): Locale {
@@ -153,24 +154,24 @@ export function getUi(locale: Locale): UiCopy {
 export function getMainNav(locale: Locale) {
   const t = ui[locale];
   return [
-    { href: "/", label: t.navHome },
-    { href: "/about", label: t.navAbout },
-    { href: "/practice-areas", label: t.navPractice },
-    { href: "/news", label: t.navNews },
-    { href: "/reviews", label: t.navReviews },
-    { href: "/contact", label: t.navContact },
+    { href: localePath(locale, "/"), label: t.navHome },
+    { href: localePath(locale, "/about"), label: t.navAbout },
+    { href: localePath(locale, "/practice-areas"), label: t.navPractice },
+    { href: localePath(locale, "/news"), label: t.navNews },
+    { href: localePath(locale, "/reviews"), label: t.navReviews },
+    { href: localePath(locale, "/contact"), label: t.navContact },
   ];
 }
 
 export function getOfficeLinks(locale: Locale) {
   const t = ui[locale];
   return [
-    { href: "/about", label: t.navAbout },
-    { href: "/about#team", label: t.teamLink },
-    { href: "/news", label: t.newsMedia },
-    { href: "/reviews", label: t.clientReviews },
-    { href: "/booking", label: t.onlineBooking },
-    { href: "/contact", label: t.navContact },
+    { href: localePath(locale, "/about"), label: t.navAbout },
+    { href: localePath(locale, "/about#team"), label: t.teamLink },
+    { href: localePath(locale, "/news"), label: t.newsMedia },
+    { href: localePath(locale, "/reviews"), label: t.clientReviews },
+    { href: localePath(locale, "/booking"), label: t.onlineBooking },
+    { href: localePath(locale, "/contact"), label: t.navContact },
   ];
 }
 
@@ -315,9 +316,9 @@ export const formCopy = {
     yourDetails: "Τα στοιχεία σας",
     notes: "Σύντομη περιγραφή (προαιρετικά)",
     notesPlaceholder: "Πείτε μας με λίγα λόγια τι αφορά η υπόθεσή σας.",
-    bookingOkTitle: "Το ραντεβού σας καταχωρήθηκε",
+    bookingOkTitle: "Το αίτημα ραντεβού σας είναι έτοιμο",
     bookingOkLead:
-      "Ευχαριστούμε, {name}. Θα επικοινωνήσουμε μαζί σας για την επιβεβαίωση του ραντεβού. Κρατήστε τον κωδικό κράτησης για κάθε επικοινωνία.",
+      "Ευχαριστούμε, {name}. Στείλτε το email που άνοιξε στο πρόγραμμα αλληλογραφίας σας και θα επικοινωνήσουμε μαζί σας για την επιβεβαίωση του ραντεβού. Κρατήστε τον κωδικό κράτησης για κάθε επικοινωνία.",
     reference: "Κωδικός",
     type: "Τύπος",
     date: "Ημερομηνία",
@@ -387,9 +388,9 @@ export const formCopy = {
     yourDetails: "Your details",
     notes: "Short description (optional)",
     notesPlaceholder: "Tell us in a few words what your matter is about.",
-    bookingOkTitle: "Your appointment has been booked",
+    bookingOkTitle: "Your appointment request is ready",
     bookingOkLead:
-      "Thank you, {name}. We will contact you to confirm. Please keep your booking reference for any correspondence.",
+      "Thank you, {name}. Send the email that opened in your mail app and we will contact you to confirm. Please keep your booking reference for any correspondence.",
     reference: "Reference",
     type: "Type",
     date: "Date",
@@ -446,7 +447,7 @@ export const actionCopy = {
     slotTaken: "Η ώρα μόλις κρατήθηκε από άλλον επισκέπτη. Παρακαλούμε επιλέξτε διαφορετική ώρα.",
     slotGone: "Η ώρα δεν είναι πλέον διαθέσιμη.",
     bookingFail: "Η κράτηση δεν ολοκληρώθηκε.",
-    bookingOk: "Το ραντεβού σας καταχωρήθηκε επιτυχώς.",
+    bookingOk: "Το αίτημα ραντεβού σας ετοιμάστηκε.",
     reviewName: "Συμπληρώστε το όνομά σας (ή τα αρχικά σας).",
     reviewRating: "Επιλέξτε βαθμολογία.",
     reviewContent: "Η κριτική πρέπει να έχει τουλάχιστον 20 χαρακτήρες.",
@@ -478,7 +479,7 @@ export const actionCopy = {
     slotTaken: "That time has just been taken. Please choose a different slot.",
     slotGone: "That time is no longer available.",
     bookingFail: "The booking could not be completed.",
-    bookingOk: "Your appointment has been booked.",
+    bookingOk: "Your appointment request is ready.",
     reviewName: "Please enter your name (or initials).",
     reviewRating: "Please choose a rating.",
     reviewContent: "The review must be at least 20 characters.",

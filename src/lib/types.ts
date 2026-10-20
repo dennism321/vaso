@@ -11,6 +11,7 @@ export type BookingConfirmation = {
   time: string;
   type: string;
   name: string;
+  via?: "sent" | "mailto";
 };
 
 export type SlotAvailability = { time: string; available: boolean };

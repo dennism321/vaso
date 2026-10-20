@@ -1,9 +1,9 @@
-import type { NewPost, NewTestimonial } from "@/db/schema";
+import type { PostInput, TestimonialInput } from "@/lib/data";
 
 const disclaimer =
   "*Το παρόν άρθρο έχει αποκλειστικά ενημερωτικό χαρακτήρα και δεν υποκαθιστά την εξατομικευμένη νομική συμβουλή.*";
 
-export const seedPosts: NewPost[] = [
+export const seedPosts: PostInput[] = [
   {
     slug: "dikaiomata-se-periptosi-syllipsis",
     title: "Σύλληψη: τα δικαιώματά σας από το πρώτο λεπτό",
@@ -227,14 +227,13 @@ ${disclaimer}`,
 
 /**
  * Sample reviews so the design can be previewed.
- * Replace them with genuine client reviews from the admin panel (/admin/reviews).
+ * Replace them with genuine client reviews by editing this file.
  */
-export const seedTestimonials: NewTestimonial[] = [
+export const seedTestimonials: TestimonialInput[] = [
   {
     name: "Γ. Μ.",
     role: "Ιδιώτης",
     rating: 5,
-    approved: true,
     content:
       "Από την πρώτη συνάντηση ένιωσα ότι η υπόθεσή μου βρίσκεται σε σωστά χέρια. Άμεση ενημέρωση σε κάθε στάδιο και ουσιαστική στήριξη σε μια πολύ δύσκολη περίοδο.",
   },
@@ -242,7 +241,6 @@ export const seedTestimonials: NewTestimonial[] = [
     name: "Κ. Λ.",
     role: "Δικηγόρος",
     rating: 5,
-    approved: true,
     content:
       "Εξαιρετική προετοιμασία και καθαρή στρατηγική στο ακροατήριο. Η επαγγελματική συνέπεια του γραφείου είναι υποδειγματική.",
   },
@@ -250,7 +248,6 @@ export const seedTestimonials: NewTestimonial[] = [
     name: "Ε. Π.",
     role: "Ιδιώτης",
     rating: 5,
-    approved: true,
     content:
       "Μας εξήγησε με ειλικρίνεια τις πιθανότητες και τα επόμενα βήματα, χωρίς ωραιοποιήσεις. Αυτό ακριβώς χρειαζόμασταν.",
   },
@@ -258,7 +255,6 @@ export const seedTestimonials: NewTestimonial[] = [
     name: "Ν. Β.",
     role: "Ιδιώτης",
     rating: 5,
-    approved: true,
     content:
       "Η ομάδα του γραφείου ήταν δίπλα μας σε όλη τη διαδικασία, ακόμη και στις πιο αγχωτικές στιγμές. Τους ευχαριστούμε από καρδιάς.",
   },
@@ -266,7 +262,6 @@ export const seedTestimonials: NewTestimonial[] = [
     name: "Α. Κ.",
     role: "Ιδιώτης",
     rating: 5,
-    approved: true,
     content:
       "Ήρεμη δύναμη μέσα στη δικαστική αίθουσα. Κάθε επιχείρημα ήταν προετοιμασμένο μέχρι την τελευταία λεπτομέρεια.",
   },
@@ -274,7 +269,6 @@ export const seedTestimonials: NewTestimonial[] = [
     name: "Μ. Τ.",
     role: "Επιχειρηματίας",
     rating: 5,
-    approved: true,
     content:
       "Άψογη συνεργασία για την επιχείρησή μας σε ένα σύνθετο ζήτημα με τράπεζα. Σαφείς οδηγίες, γρήγορη ανταπόκριση και αποτέλεσμα.",
   },

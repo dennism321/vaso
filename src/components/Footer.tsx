@@ -6,6 +6,7 @@ import { FacebookIcon, YoutubeIcon } from "@/components/Icons";
 import { getOfficeLinks, getUi, type Locale } from "@/lib/i18n";
 import type { PracticeArea } from "@/lib/practice-areas";
 import { site } from "@/lib/site";
+import { localePath } from "@/lib/paths";
 
 export default function Footer({ locale, areas }: { locale: Locale; areas: PracticeArea[] }) {
   const year = new Date().getFullYear();
@@ -17,7 +18,7 @@ export default function Footer({ locale, areas }: { locale: Locale; areas: Pract
       <div className="noise pointer-events-none absolute inset-0 opacity-[0.04]" />
       <div className="container-x relative grid gap-12 py-20 md:grid-cols-2 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <Logo subtitle={t.logoSubtitle} />
+          <Logo subtitle={t.logoSubtitle} locale={locale} />
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/55">{t.footerBlurb}</p>
           <div className="mt-8 flex gap-3">
             <a
@@ -46,7 +47,7 @@ export default function Footer({ locale, areas }: { locale: Locale; areas: Pract
           <ul className="mt-6 space-y-3 text-sm">
             {areas.map((area) => (
               <li key={area.slug}>
-                <Link href={`/practice-areas/${area.slug}`} className="transition hover:text-gold-200">
+                <Link href={localePath(locale, `/practice-areas/${area.slug}`)} className="transition hover:text-gold-200">
                   {area.title}
                 </Link>
               </li>
@@ -115,11 +116,8 @@ export default function Footer({ locale, areas }: { locale: Locale; areas: Pract
           </p>
           <p className="max-w-xl lg:text-center">{t.footerDisclaimer}</p>
           <div className="flex gap-5">
-            <Link href="/privacy" className="hover:text-gold-200">
+            <Link href={localePath(locale, "/privacy")} className="hover:text-gold-200">
               {t.privacy}
-            </Link>
-            <Link href="/admin" className="hover:text-gold-200">
-              {t.admin}
             </Link>
           </div>
         </div>

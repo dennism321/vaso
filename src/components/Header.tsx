@@ -10,6 +10,7 @@ import { AreaIcon, FacebookIcon, YoutubeIcon } from "@/components/Icons";
 import { getMainNav, getUi, type Locale } from "@/lib/i18n";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { localePath } from "@/lib/paths";
 
 type AreaLink = { slug: string; title: string; icon: string; short: string };
 
@@ -34,7 +35,8 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
     };
   }, [open]);
 
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const home = localePath(locale, "/");
+  const isActive = (href: string) => (href === home ? pathname === home || pathname === `${home}/` : pathname.startsWith(href));
   const close = () => setOpen(false);
 
   return (
@@ -78,7 +80,7 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
       </div>
 
       <div className="container-x flex h-20 items-center justify-between gap-4 lg:gap-6">
-        <Logo subtitle={t.logoSubtitle} />
+        <Logo subtitle={t.logoSubtitle} locale={locale} />
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label={t.mainNavAria}>
           {nav.map((item) =>
@@ -100,7 +102,7 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
                       {areas.map((area) => (
                         <Link
                           key={area.slug}
-                          href={`/practice-areas/${area.slug}`}
+                          href={localePath(locale, `/practice-areas/${area.slug}`)}
                           className="group/item flex items-start gap-3 rounded-xl p-3 transition hover:bg-white/[0.04]"
                         >
                           <span className="grid size-10 shrink-0 place-items-center rounded-lg border border-gold-400/25 bg-gold-400/10 text-gold-300 transition group-hover/item:border-gold-300/60">
@@ -115,7 +117,7 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
                     </div>
                     <div className="flex items-center justify-between border-t border-white/10 bg-white/[0.02] px-6 py-4 text-sm">
                       <span className="text-white/55">{t.cantFindArea}</span>
-                      <Link href="/contact" className="flex items-center gap-2 font-medium text-gold-300 hover:text-gold-200">
+                      <Link href={localePath(locale, "/contact")} className="flex items-center gap-2 font-medium text-gold-300 hover:text-gold-200">
                         {t.contactUs} <ArrowRight className="size-4" />
                       </Link>
                     </div>
@@ -153,7 +155,7 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
           <div className="hidden lg:block">
             <LanguageToggle locale={locale} />
           </div>
-          <Link href="/booking" className="btn btn-gold btn-sm hidden sm:inline-flex">
+          <Link href={localePath(locale, "/booking")} className="btn btn-gold btn-sm hidden sm:inline-flex">
             {t.bookAppointment}
           </Link>
           <button
@@ -201,7 +203,7 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
               {areas.map((area) => (
                 <Link
                   key={area.slug}
-                  href={`/practice-areas/${area.slug}`}
+                  href={localePath(locale, `/practice-areas/${area.slug}`)}
                   onClick={close}
                   className="flex items-center gap-3 rounded-xl border border-white/10 px-4 py-3 text-sm text-white/80"
                 >
@@ -215,7 +217,7 @@ export default function Header({ areas, locale }: { areas: AreaLink[]; locale: L
             <LanguageToggle locale={locale} variant="menu" />
           </div>
           <div className="mt-auto grid gap-3 pt-10">
-            <Link href="/booking" onClick={close} className="btn btn-gold w-full">
+            <Link href={localePath(locale, "/booking")} onClick={close} className="btn btn-gold w-full">
               {t.bookAppointment}
             </Link>
             <a href={site.mobile.href} className="btn btn-ghost w-full">

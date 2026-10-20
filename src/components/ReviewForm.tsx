@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { CircleCheck, Send, TriangleAlert } from "lucide-react";
-import { submitReview } from "@/app/actions/public";
+import { submitReview } from "@/lib/forms";
 import { formCopy, getUi, type Locale } from "@/lib/i18n";
+import { localePath } from "@/lib/paths";
 import type { ActionResult } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -88,7 +89,7 @@ export default function ReviewForm({ locale = "el" }: { locale?: Locale }) {
         <input type="checkbox" name="consent" className="mt-0.5 size-4 accent-gold-600" />
         <span>
           Συναινώ στη δημοσίευση της κριτικής μου με το όνομα/αρχικά που δήλωσα, σύμφωνα με την{" "}
-          <Link href="/privacy" className="text-gold-700 underline underline-offset-2">
+          <Link href={localePath(locale, "/privacy")} className="text-gold-700 underline underline-offset-2">
             Πολιτική Απορρήτου
           </Link>
           . *

@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { CircleCheck, Send, TriangleAlert } from "lucide-react";
-import { submitContact } from "@/app/actions/public";
+import { submitContact } from "@/lib/forms";
 import { formCopy, getUi, type Locale } from "@/lib/i18n";
+import { localePath } from "@/lib/paths";
 import type { ActionResult } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -119,7 +120,7 @@ export default function ContactForm({
           <input type="checkbox" name="consent" className="mt-0.5 size-4 accent-gold-600" aria-invalid={!!error("consent")} />
           <span>
             {f.consentContact}{" "}
-            <Link href="/privacy" className="text-gold-700 underline underline-offset-2">
+            <Link href={localePath(locale, "/privacy")} className="text-gold-700 underline underline-offset-2">
               {t.privacy}
             </Link>
             . {f.required}

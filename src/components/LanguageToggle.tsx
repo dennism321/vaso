@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { setLocaleAction } from "@/app/actions/locale";
 import type { Locale } from "@/lib/i18n";
+import { switchLocalePath } from "@/lib/paths";
 import { cn } from "@/lib/utils";
 
 export default function LanguageToggle({
@@ -14,14 +14,13 @@ export default function LanguageToggle({
   variant?: "header" | "bar" | "menu";
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [pending, startTransition] = useTransition();
 
   function switchTo(next: Locale) {
     if (next === locale || pending) return;
-    startTransition(async () => {
-      await setLocaleAction(next);
-      router.refresh();
-    });
+    const target = switchLocalePath(pathname, next) + window.location.search + window.location.hash;
+    startTransition(() => router.push(target));
   }
 
   const isMenu = variant === "menu";

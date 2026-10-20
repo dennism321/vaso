@@ -3,6 +3,7 @@ import { ArrowUpRight, Clock, Play } from "lucide-react";
 import type { PostSummary } from "@/lib/data";
 import { getUi, localizeCategory, type Locale } from "@/lib/i18n";
 import { cn, formatDate } from "@/lib/utils";
+import { asset, localePath } from "@/lib/paths";
 
 export default function PostCard({ post, large = false, locale = "el" }: { post: PostSummary; large?: boolean; locale?: Locale }) {
   const t = getUi(locale);
@@ -17,7 +18,7 @@ export default function PostCard({ post, large = false, locale = "el" }: { post:
         {post.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={post.coverImage}
+            src={asset(post.coverImage)}
             alt=""
             loading="lazy"
             className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105"
@@ -49,7 +50,7 @@ export default function PostCard({ post, large = false, locale = "el" }: { post:
             large ? "text-2xl md:text-4xl" : "text-xl",
           )}
         >
-          <Link href={`/news/${post.slug}`} className="after:absolute after:inset-0">
+          <Link href={localePath(locale, `/news/${post.slug}`)} className="after:absolute after:inset-0">
             {post.title}
           </Link>
         </h3>

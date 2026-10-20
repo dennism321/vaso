@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 import { getUi, type Locale } from "@/lib/i18n";
+import { localePath } from "@/lib/paths";
 
 export default function PageHero({
   eyebrow,
@@ -30,14 +31,14 @@ export default function PageHero({
       <div className="noise pointer-events-none absolute inset-0 opacity-[0.05]" />
       <div className="container-x relative">
         <nav aria-label={locale === "en" ? "Breadcrumb" : "Διαδρομή"} className="mb-10 flex flex-wrap items-center gap-2 text-xs text-white/45 animate-fade-in">
-          <Link href="/" className="transition hover:text-gold-300">
+          <Link href={localePath(locale, "/")} className="transition hover:text-gold-300">
             {t.homeLabel}
           </Link>
           {crumbs.map((crumb) => (
             <span key={crumb.label} className="flex items-center gap-2">
               <ChevronRight className="size-3" />
               {crumb.href ? (
-                <Link href={crumb.href} className="transition hover:text-gold-300">
+                <Link href={localePath(locale, crumb.href)} className="transition hover:text-gold-300">
                   {crumb.label}
                 </Link>
               ) : (

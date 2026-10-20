@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/noto-serif-display";
 import "./globals.css";
-import { getLocale } from "@/lib/locale";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -50,10 +49,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
-  const locale = await getLocale();
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang="el" suppressHydrationWarning>
       <body className="min-h-screen bg-cream-50 font-sans text-ink-800 antialiased">{children}</body>
     </html>
   );

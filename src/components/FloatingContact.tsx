@@ -6,6 +6,7 @@ import { ArrowUp, CalendarCheck, Mail, Phone } from "lucide-react";
 import { getUi, type Locale } from "@/lib/i18n";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { localePath } from "@/lib/paths";
 
 export default function FloatingContact({ locale }: { locale: Locale }) {
   const [visible, setVisible] = useState(false);
@@ -24,7 +25,7 @@ export default function FloatingContact({ locale }: { locale: Locale }) {
         <a href={site.mobile.href} className="flex flex-col items-center gap-1 py-3 text-[0.7rem] font-medium text-white/80">
           <Phone className="size-5 text-gold-300" /> {t.floatCall}
         </a>
-        <Link href="/booking" className="flex flex-col items-center gap-1 bg-gold-400/10 py-3 text-[0.7rem] font-medium text-gold-200">
+        <Link href={localePath(locale, "/booking")} className="flex flex-col items-center gap-1 bg-gold-400/10 py-3 text-[0.7rem] font-medium text-gold-200">
           <CalendarCheck className="size-5" /> {t.floatBooking}
         </Link>
         <a href={`mailto:${site.email}`} className="flex flex-col items-center gap-1 py-3 text-[0.7rem] font-medium text-white/80">
