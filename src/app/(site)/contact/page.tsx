@@ -7,7 +7,7 @@ import { practiceAreas } from "@/lib/practice-areas";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Επικοινωνία",
+  title: "Επικοινωνήστε μαζί μας",
   description: `Επικοινωνήστε με το δικηγορικό γραφείο ${site.name}. ${site.fullAddress} · Τηλ. ${site.phone.display}.`,
   alternates: { canonical: "/contact" },
 };
@@ -23,11 +23,11 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Επικοινωνία"
+        eyebrow="Επικοινωνήστε"
         title="Είμαστε εδώ για να σας ακούσουμε"
         description="Τηλεφωνήστε μας, στείλτε μας μήνυμα ή κλείστε online ραντεβού. Κάθε επικοινωνία καλύπτεται από απόλυτη εχεμύθεια."
         image="/images/consultation.jpg"
-        crumbs={[{ label: "Επικοινωνία" }]}
+        crumbs={[{ label: "Επικοινωνήστε" }]}
       />
 
       <section className="relative z-10 -mt-12">

@@ -341,7 +341,7 @@ export default async function HomePage() {
           <div className="container-x">
             <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
               <SectionHeading
-                eyebrow="Αρθρογραφία & ΜΜΕ"
+                eyebrow="Άρθρα & ΜΜΕ"
                 title="Νομικοί οδηγοί και επικαιρότητα"
                 description="Κατανοητά άρθρα για τα δικαιώματά σας, καθώς και οι παρεμβάσεις μας στα μέσα ενημέρωσης."
               />
@@ -374,7 +374,7 @@ export default async function HomePage() {
                 Επικοινωνήστε μαζί μας και θα σας απαντήσουμε το συντομότερο δυνατό.
               </p>
               <Link href="/contact" className="btn btn-gold btn-sm mt-6">
-                Επικοινωνία <ArrowRight className="size-4" />
+                Επικοινωνήστε <ArrowRight className="size-4" />
               </Link>
             </div>
           </div>

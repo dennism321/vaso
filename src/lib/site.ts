@@ -37,10 +37,10 @@ export const mainNav = [
   { href: "/", label: "Αρχική" },
   { href: "/about", label: "Το Γραφείο" },
   { href: "/practice-areas", label: "Τομείς Δικαίου" },
-  { href: "/news", label: "Αρθρογραφία" },
+  { href: "/news", label: "Άρθρα" },
   { href: "/media", label: "Στα ΜΜΕ" },
   { href: "/reviews", label: "Κριτικές" },
-  { href: "/contact", label: "Επικοινωνία" },
+  { href: "/contact", label: "Επικοινωνήστε" },
 ];
 
 export const stats = [

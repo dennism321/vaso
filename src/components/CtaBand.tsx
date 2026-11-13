@@ -17,7 +17,7 @@ export default function CtaBand({
       <div className="noise pointer-events-none absolute inset-0 opacity-[0.05]" />
       <div className="container-x relative grid items-center gap-12 lg:grid-cols-[1.4fr_1fr]">
         <div data-reveal>
-          <p className="eyebrow">Επικοινωνία</p>
+          <p className="eyebrow">Επικοινωνήστε</p>
           <h2 className="mt-6 font-serif text-4xl leading-[1.1] text-white md:text-6xl">{title}</h2>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/60">{text}</p>
           <div className="mt-10 flex flex-wrap gap-4">

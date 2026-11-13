@@ -9,7 +9,7 @@ const tabs = [
 /** Switch between the articles page and the media appearances page. */
 export default function NewsTabs({ active }: { active: "/news" | "/media" }) {
   return (
-    <nav aria-label="Αρθρογραφία & ΜΜΕ" className="mb-10 flex gap-8 border-b border-cream-200">
+    <nav aria-label="Άρθρα & ΜΜΕ" className="mb-10 flex gap-8 border-b border-cream-200">
       {tabs.map((tab) => (
         <Link
           key={tab.href}

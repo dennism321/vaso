@@ -9,11 +9,11 @@ import { site } from "@/lib/site";
 const officeLinks = [
   { href: "/about", label: "Το Γραφείο" },
   { href: "/about#team", label: "Η Ομάδα μας" },
-  { href: "/news", label: "Αρθρογραφία" },
+  { href: "/news", label: "Άρθρα" },
   { href: "/media", label: "Στα ΜΜΕ" },
   { href: "/reviews", label: "Κριτικές πελατών" },
   { href: "/booking", label: "Online ραντεβού" },
-  { href: "/contact", label: "Επικοινωνία" },
+  { href: "/contact", label: "Επικοινωνήστε" },
 ];
 
 export default function Footer() {
@@ -78,7 +78,7 @@ export default function Footer() {
         </div>
 
         <div className="lg:col-span-3">
-          <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-300">Επικοινωνία</h3>
+          <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-300">Επικοινωνήστε</h3>
           <ul className="mt-6 space-y-4 text-sm">
             <li className="flex gap-3">
               <MapPin className="mt-0.5 size-4 shrink-0 text-gold-400" />

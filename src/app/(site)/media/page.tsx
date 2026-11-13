@@ -20,7 +20,7 @@ export default function MediaPage() {
         eyebrow="Στα ΜΜΕ"
         title="Η Βάσω Πανταζή στα μέσα ενημέρωσης"
         description="Τηλεοπτικές συνεντεύξεις, ραδιοφωνικές εκπομπές και δημοσιεύματα για υποθέσεις που χειρίζεται το γραφείο."
-        crumbs={[{ href: "/news", label: "Αρθρογραφία" }, { label: "Στα ΜΜΕ" }]}
+        crumbs={[{ href: "/news", label: "Άρθρα" }, { label: "Στα ΜΜΕ" }]}
       />
       <MediaBrowser items={items} youtubeChannel={site.social.youtube} tabs={<NewsTabs active="/media" />} />
     </>

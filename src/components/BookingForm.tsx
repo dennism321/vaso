@@ -291,7 +291,7 @@ export default function BookingForm({ areas }: { areas: string[] }) {
             </div>
             <div className="mt-10 flex justify-end">
               <button type="button" onClick={() => setStep(2)} className="btn btn-dark">
-                Συνέχεια <ArrowRight className="size-4" />
+                Επόμενο βήμα <ArrowRight className="size-4" />
               </button>
             </div>
           </div>
@@ -411,10 +411,10 @@ export default function BookingForm({ areas }: { areas: string[] }) {
             </div>
             <div className="mt-10 flex justify-between gap-4">
               <button type="button" onClick={() => setStep(1)} className="btn btn-outline">
-                <ArrowLeft className="size-4" /> Πίσω
+                <ArrowLeft className="size-4" /> Προηγούμενο βήμα
               </button>
               <button type="button" onClick={() => setStep(3)} disabled={!date || !time} className="btn btn-dark">
-                Συνέχεια <ArrowRight className="size-4" />
+                Επόμενο βήμα <ArrowRight className="size-4" />
               </button>
             </div>
           </div>
@@ -484,7 +484,7 @@ export default function BookingForm({ areas }: { areas: string[] }) {
             {error("consent") && <p className="mt-1.5 text-xs text-orange-700">{error("consent")}</p>}
             <div className="mt-10 flex justify-between gap-4">
               <button type="button" onClick={() => setStep(2)} className="btn btn-outline">
-                <ArrowLeft className="size-4" /> Πίσω
+                <ArrowLeft className="size-4" /> Προηγούμενο βήμα
               </button>
               <button type="submit" disabled={pending} className="btn btn-gold">
                 {pending ? (

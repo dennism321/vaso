@@ -43,7 +43,7 @@ export default function CountUp({
   }, [to, duration, animate]);
 
   return (
-    <span ref={ref} className="tabular-nums">
+    <span ref={ref} className="notranslate tabular-nums" translate="no">
       {value}
       {suffix}
     </span>

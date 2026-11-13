@@ -94,7 +94,7 @@ export default async function PracticeAreaPage({ params }: Props) {
 
           <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-3xl border border-cream-200 bg-white p-8">
-              <p className="eyebrow">Επικοινωνία</p>
+              <p className="eyebrow">Επικοινωνήστε</p>
               <p className="mt-4 font-serif text-2xl text-ink-900">Μιλήστε με έναν δικηγόρο μας</p>
               <p className="mt-3 text-sm leading-relaxed text-ink-500">
                 Περιγράψτε μας την υπόθεσή σας και θα σας ενημερώσουμε για τις επιλογές σας.
@@ -138,7 +138,7 @@ export default async function PracticeAreaPage({ params }: Props) {
       {related.length > 0 && (
         <section className="bg-cream-100 py-24">
           <div className="container-x">
-            <SectionHeading eyebrow="Σχετικά άρθρα" title={`Αρθρογραφία: ${area.title}`} />
+            <SectionHeading eyebrow="Σχετικά άρθρα" title={`Άρθρα: ${area.title}`} />
             <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {related.map((post) => (
                 <div key={post.id} data-reveal>

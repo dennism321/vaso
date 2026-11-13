@@ -3,7 +3,7 @@ import NewsBrowser from "@/components/NewsBrowser";
 import { getCategories, getNewsIndex } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Αρθρογραφία & ΜΜΕ",
+  title: "Άρθρα & ΜΜΕ",
   description:
     "Νομικοί οδηγοί για τα δικαιώματά σας, αναλύσεις και οι παρεμβάσεις του γραφείου στα μέσα ενημέρωσης.",
   alternates: { canonical: "/news" },

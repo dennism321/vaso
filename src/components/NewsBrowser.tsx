@@ -80,10 +80,10 @@ export default function NewsBrowser({
   return (
     <>
       <PageHero
-        eyebrow="Αρθρογραφία & ΜΜΕ"
+        eyebrow="Άρθρα & ΜΜΕ"
         title="Γνώση που σας προστατεύει"
         description="Κατανοητοί νομικοί οδηγοί, αναλύσεις επικαιρότητας και οι παρεμβάσεις μας στα μέσα ενημέρωσης."
-        crumbs={[{ label: "Αρθρογραφία" }]}
+        crumbs={[{ label: "Άρθρα" }]}
       >
         <form
           role="search"
@@ -165,7 +165,7 @@ export default function NewsBrowser({
                 }}
                 className="flex items-center gap-1 rounded-full bg-cream-100 px-3 py-1 text-ink-700 hover:bg-cream-200"
               >
-                <X className="size-3.5" /> Καθαρισμός
+                <X className="size-3.5" /> Εκκαθάριση
               </button>
             </div>
           )}

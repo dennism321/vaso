@@ -6,7 +6,7 @@ import { practiceAreas } from "@/lib/practice-areas";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Online Ραντεβού",
+  title: "Κλείστε ραντεβού",
   description:
     "Κλείστε online ραντεβού με το δικηγορικό γραφείο: συνάντηση στο γραφείο, βιντεοκλήση ή τηλεφωνική συμβουλή.",
   alternates: { canonical: "/booking" },
