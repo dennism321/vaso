@@ -55,7 +55,8 @@ function parentDomain(hostname: string) {
   return `.${parts.slice(-2).join(".")}`;
 }
 
-function currentLang() {
+/** "en" while the Google Translate English version is switched on, otherwise "el". Browser only. */
+export function currentLang() {
   const value = readCookie(COOKIE);
   // Cookie values look like "/el/en" when English is active.
   return value && value.endsWith("/en") ? "en" : "el";

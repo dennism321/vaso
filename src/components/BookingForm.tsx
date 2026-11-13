@@ -28,12 +28,14 @@ import {
   timeToMinutes,
   type ConsultationType,
 } from "@/lib/booking";
+import { currentLang } from "@/components/LanguageSwitcher";
 import { site } from "@/lib/site";
 import type { ActionResult, BookingConfirmation, SlotAvailability } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const typeIcons = { office: MapPin, video: Video, phone: Phone } as const;
-const weekdays = ["Δε", "Τρ", "Τε", "Πε", "Πα", "Σα", "Κυ"];
+// Google Translate garbles two-letter weekday names, so the English version gets its own.
+const weekdays = { el: ["Δε", "Τρ", "Τε", "Πε", "Πα", "Σα", "Κυ"], en: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] };
 const steps = ["Τύπος συνάντησης", "Ημερομηνία & ώρα", "Στοιχεία"];
 
 function monthCells(ym: string) {
@@ -327,8 +329,8 @@ export default function BookingForm({ areas }: { areas: string[] }) {
                       </button>
                     </div>
                     <div className="mt-6 grid grid-cols-7 gap-1.5 text-center">
-                      {weekdays.map((d) => (
-                        <span key={d} className="pb-2 text-xs font-semibold uppercase text-ink-400">
+                      {weekdays[currentLang()].map((d) => (
+                        <span key={d} translate="no" className="notranslate pb-2 text-xs font-semibold uppercase text-ink-400">
                           {d}
                         </span>
                       ))}
@@ -409,7 +411,7 @@ export default function BookingForm({ areas }: { areas: string[] }) {
                 )}
               </div>
             </div>
-            <div className="mt-10 flex justify-between gap-4">
+            <div className="mt-10 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between sm:gap-4">
               <button type="button" onClick={() => setStep(1)} className="btn btn-outline">
                 <ArrowLeft className="size-4" /> Προηγούμενο βήμα
               </button>
@@ -482,7 +484,7 @@ export default function BookingForm({ areas }: { areas: string[] }) {
               </span>
             </label>
             {error("consent") && <p className="mt-1.5 text-xs text-orange-700">{error("consent")}</p>}
-            <div className="mt-10 flex justify-between gap-4">
+            <div className="mt-10 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between sm:gap-4">
               <button type="button" onClick={() => setStep(2)} className="btn btn-outline">
                 <ArrowLeft className="size-4" /> Προηγούμενο βήμα
               </button>

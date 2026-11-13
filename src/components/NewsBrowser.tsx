@@ -165,7 +165,7 @@ export default function NewsBrowser({
                 }}
                 className="flex items-center gap-1 rounded-full bg-cream-100 px-3 py-1 text-ink-700 hover:bg-cream-200"
               >
-                <X className="size-3.5" /> Εκκαθάριση
+                <X className="size-3.5" /> Εμφάνιση όλων
               </button>
             </div>
           )}
